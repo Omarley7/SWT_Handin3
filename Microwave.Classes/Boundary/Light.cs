@@ -5,7 +5,7 @@ namespace Microwave.Classes.Boundary
     public class Light : ILight
     {
         private IOutput myOutput;
-        private bool isOn = false;
+        private bool isOn = true;
         
         public Light(IOutput output)
         {
