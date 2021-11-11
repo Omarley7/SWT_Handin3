@@ -31,5 +31,6 @@ namespace Microwave.Test.Unit
             Assert.That(notified, Is.EqualTo(true));
         }
 
+
     }
 }
