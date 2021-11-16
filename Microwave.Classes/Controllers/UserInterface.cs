@@ -17,7 +17,9 @@ namespace Microwave.Classes.Controllers
         private ILight myLight;
         private IDisplay myDisplay;
 
-        private int powerLevel = 50;
+
+        private int maxPower = 100; //maximum is 100%
+        private int powerLevel = 10; //minimum power level is 1%
         private int time = 1;
 
         public UserInterface(
@@ -43,7 +45,7 @@ namespace Microwave.Classes.Controllers
 
         private void ResetValues()
         {
-            powerLevel = 50;
+            powerLevel = 10;
             time = 1;
         }
 
@@ -56,7 +58,7 @@ namespace Microwave.Classes.Controllers
                     myState = States.SETPOWER;
                     break;
                 case States.SETPOWER:
-                    powerLevel = (powerLevel >= 700 ? 50 : powerLevel+50);
+                    powerLevel = (powerLevel >= maxPower ? 10 : powerLevel+10);  //power increases by 10% at a time, ranges 10,20,30% etc of max power.
                     myDisplay.ShowPower(powerLevel);
                     break;
             }

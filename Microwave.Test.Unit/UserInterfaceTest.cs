@@ -61,7 +61,7 @@ namespace Microwave.Test.Unit
         }
 
         [Test]
-        public void Ready_DoorOpenClose_Ready_PowerIs50()
+        public void Ready_DoorOpenClose_Ready_PowerIs10()
         {
             // This test that uut has subscribed to power button, and works correctly
             // simulating the events through NSubstitute
@@ -69,37 +69,37 @@ namespace Microwave.Test.Unit
             door.Closed += Raise.EventWith(this, EventArgs.Empty);
 
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            display.Received(1).ShowPower(Arg.Is<int>(50));
+            display.Received(1).ShowPower(Arg.Is<int>(10));
         }
 
         [Test]
-        public void Ready_2PowerButton_PowerIs100()
+        public void Ready_2PowerButton_PowerIs20()
         {
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            display.Received(1).ShowPower(Arg.Is<int>(100));
+            display.Received(1).ShowPower(Arg.Is<int>(20));
         }
 
         [Test]
-        public void Ready_14PowerButton_PowerIs700()
+        public void Ready_10PowerButton_PowerIs100()
         {
             for (int i = 1; i <= 14; i++)
             {
                 powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             }
-            display.Received(1).ShowPower(Arg.Is<int>(700));
+            display.Received(1).ShowPower(Arg.Is<int>(100));
         }
 
         [Test]
-        public void Ready_15PowerButton_PowerIs50Again()
+        public void Ready_11PowerButton_PowerIs10Again()
         {
-            for (int i = 1; i <= 15; i++)
+            for (int i = 1; i <= 11; i++)
             {
                 powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             }
             // And then once more
             powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
-            display.Received(2).ShowPower(50);
+            display.Received(2).ShowPower(10);
         }
 
         [Test]
@@ -166,7 +166,7 @@ namespace Microwave.Test.Unit
             // Now in SetTime
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
-            cooker.Received(1).StartCooking(50, 60);
+            cooker.Received(1).StartCooking(10, 60);
         }
 
         [Test]
@@ -207,13 +207,13 @@ namespace Microwave.Test.Unit
             // Should call with correct values
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
-            cooker.Received(1).StartCooking(100, 120);
+            cooker.Received(1).StartCooking(20, 120);
         }
 
         [Test]
         public void Ready_FullPower_CookerIsCalledCorrectly()
         {
-            for (int i = 50; i <= 700; i += 50)
+            for (int i = 10; i <= 100; i += 10)
             {
                 powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
             }
@@ -224,7 +224,7 @@ namespace Microwave.Test.Unit
             // Should call with correct values
             startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
 
-            cooker.Received(1).StartCooking(700, 60);
+            cooker.Received(1).StartCooking(100, 60);
 
         }
 

@@ -11,30 +11,30 @@ namespace Microwave.Test.Unit
     {
         private PowerTube uut;
         private IOutput output;
+        private int maxPower=700;
 
         [SetUp]
         public void Setup()
         {
             output = Substitute.For<IOutput>();
-            uut = new PowerTube(output);
+            uut = new PowerTube(output,maxPower);
         }
 
         [TestCase(1)]
-        [TestCase(50)]
+        [TestCase(10)]
+        [TestCase(99)]
         [TestCase(100)]
-        [TestCase(699)]
-        [TestCase(700)]
         public void TurnOn_WasOffCorrectPower_CorrectOutput(int power)
         {
             uut.TurnOn(power);
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains($"{power}")));
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains($"{(maxPower*power)/100}")));
         }
 
         [TestCase(-5)]
         [TestCase(-1)]
         [TestCase(0)]
-        [TestCase(701)]
-        [TestCase(750)]
+        [TestCase(101)]
+        [TestCase(130)]
         public void TurnOn_WasOffOutOfRangePower_ThrowsException(int power)
         {
             Assert.Throws<System.ArgumentOutOfRangeException>(() => uut.TurnOn(power));

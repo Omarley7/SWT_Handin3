@@ -18,12 +18,12 @@ namespace Microwave.Classes.Boundary
 
         public void ShowPower(int power)
         {
-            myOutput.OutputLine($"Display shows: {power} W");
+            myOutput.OutputLine($"Display shows: {power}% Power");
         }
 
         public void Clear()
         {
-            myOutput.OutputLine($"Display cleared");
+            myOutput.OutputLine($"Display cleared!");
         }
     }
 }

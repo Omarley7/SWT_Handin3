@@ -50,14 +50,14 @@ namespace Microwave.Test.Unit
         public void ShowPower_Zero_CorrectOutput()
         {
             uut.ShowPower(0);
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("0 W")));
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("0%")));
         }
 
         [Test]
         public void ShowPower_NotZero_CorrectOutput()
         {
             uut.ShowPower(150);
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("150 W")));
+            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("150%")));
         }
 
         [Test]
