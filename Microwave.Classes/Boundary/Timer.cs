@@ -52,5 +52,17 @@ namespace Microwave.Classes.Boundary
             }
         }
 
+        //Sigurds tilføjelse
+        public void AddTime()
+        {
+            TimeRemaining += 60;
+        }
+
+        public void RemoveTime()
+        {
+            TimeRemaining -= 60;
+            if (TimeRemaining <= 0)
+                TimeRemaining = 0;
+        }
     }
 }

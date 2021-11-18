@@ -69,5 +69,17 @@ namespace Microwave.Classes.Controllers
                 myDisplay.ShowTime(remaining / 60, remaining % 60);
             }
         }
+
+        //Sigurds tilføjelse
+        public void AddTime()
+        {
+            myTimer.AddTime() ; //Ville gerne redigere timeremaining direkte, men den har en private set. Så jeg har lavet en metode til at tilføje istedet
+        }
+
+        //Sigurds tilføjelse
+        public void RemoveTime()
+        {
+            myTimer.RemoveTime(); //Ville gerne redigere timeremaining direkte, men den har en private set. Så jeg har lavet en metode til at tilføje istedet
+        }
     }
 }
