@@ -9,24 +9,29 @@ namespace Microwave.Classes.Boundary
 
         private bool IsOn = false;
 
-        public PowerTube(IOutput output)
+        private int MaxPower;
+        private int CurrentPower = 0;
+
+        public PowerTube(IOutput output, int maxPower)
         {
             myOutput = output;
+            this.MaxPower = maxPower;
         }
 
         public void TurnOn(int power)
         {
-            if (power < 1 || 700 < power)
+            if (power < 1 || 100 < power)
             {
-                throw new ArgumentOutOfRangeException("power", power, "Must be between 1 and 700 (incl.)");
+                throw new ArgumentOutOfRangeException("power", power, $"Must be between 1% and 100% (incl.)");
             }
 
             if (IsOn)
             {
                 throw new ApplicationException("PowerTube.TurnOn: is already on");
             }
-
-            myOutput.OutputLine($"PowerTube works with {power}");
+            //calculate power to use
+            CurrentPower = (MaxPower * power) / 100;
+            myOutput.OutputLine($"PowerTube works with {CurrentPower}W");
             IsOn = true;
         }
 

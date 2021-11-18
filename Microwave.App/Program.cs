@@ -8,6 +8,8 @@ namespace Microwave.App
     {
         static void Main(string[] args)
         {
+            int powerTubeMaxPower = 700;
+
             Button startCancelButton = new Button();
             Button powerButton = new Button();
             Button timeButton = new Button();
@@ -18,7 +20,7 @@ namespace Microwave.App
 
             Display display = new Display(output);
 
-            PowerTube powerTube = new PowerTube(output);
+            PowerTube powerTube = new PowerTube(output, powerTubeMaxPower);
 
             Light light = new Light(output);
 
