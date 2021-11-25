@@ -14,7 +14,7 @@ namespace Microwave.Classes.Boundary
             if (times >= 0)
             {
                 for (int i = 0; i < times; i++)
-                myOutput.OutputLine("Beep!");
+                    myOutput.OutputLine("Beep!");
             }
             else
             {
