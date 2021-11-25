@@ -9,15 +9,17 @@ namespace Microwave.Classes.Boundary
     public class Buzzer : IBuzzer
     {
         private readonly IOutput myOutput;
-        public void ShortBeep()
+        public void ShortBeep(int times)
         {
-            myOutput.OutputLine("Beep!");
-        }
-
-        public void ThreeShortBeeps()
-        {
-            for (int i = 0; i < 3; i++)
+            if (times >= 0)
+            {
+                for (int i = 0; i < times; i++)
                 myOutput.OutputLine("Beep!");
+            }
+            else
+            {
+                throw new ApplicationException("Number of beeps can't be negative");
+            }
         }
 
         public Buzzer(IOutput output)

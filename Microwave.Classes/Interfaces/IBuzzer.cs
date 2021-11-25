@@ -6,7 +6,6 @@ namespace Microwave.Classes.Interfaces
 {
     public interface IBuzzer
     {
-        void ShortBeep();
-        void ThreeShortBeeps();
+        void ShortBeep(int times);
     }
 }

@@ -24,8 +24,21 @@ namespace Microwave.Test.Unit
         [Test]
         public void BuzzThreeTimes()
         {
-            uut.ShortBeep();
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("Beep!")));
+            uut.ShortBeep(3);
+            output.Received(3).OutputLine(Arg.Is<string>(str => str.Contains("Beep!")));
+        }
+
+        [Test]
+        public void SortBeep_NegativeParam_ExceptionThrown()
+        {
+            Assert.Throws<ApplicationException>(() => uut.ShortBeep(-1));
+        }
+
+        [Test]
+        public void ShortBeep_ZeroParam_NoBeeps()
+        {
+            uut.ShortBeep(0);
+            output.Received(0);
         }
     }
 }
