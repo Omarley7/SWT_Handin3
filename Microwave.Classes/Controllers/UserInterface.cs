@@ -27,6 +27,7 @@ namespace Microwave.Classes.Controllers
             IButton powerButton,
             IButton timeButton,
             IButton startCancelButton,
+            IButton negativeTimeButton, //Sigurds tilføjelse
             IDoor door,
             IDisplay display,
             ILight light,
@@ -35,6 +36,7 @@ namespace Microwave.Classes.Controllers
         {
             powerButton.Pressed += new EventHandler(OnPowerPressed);
             timeButton.Pressed += new EventHandler(OnTimePressed);
+            negativeTimeButton.Pressed += new EventHandler(OnNegativeTimePressed); //Sigurds tilføjelse
             startCancelButton.Pressed += new EventHandler(OnStartCancelPressed);
 
             door.Closed += new EventHandler(OnDoorClosed);
@@ -67,7 +69,7 @@ namespace Microwave.Classes.Controllers
             }
         }
 
-        public void OnTimePressed(object sender, EventArgs e)
+        public void OnTimePressed(object sender, EventArgs e) //Kopiér denne funktion til negativ
         {
             switch (myState)
             {
@@ -79,8 +81,36 @@ namespace Microwave.Classes.Controllers
                     time += 1;
                     myDisplay.ShowTime(time, 0);
                     break;
+                case States.COOKING:
+                    //Sigurds tilføjelse
+                    time += 1;
+                    myDisplay.ShowTime(time, 0);
+                    myCooker.AddTime();
+                    break;
             }
         }
+
+        //Sigurds tilføjelse (hele funktionen)
+        public void OnNegativeTimePressed(object sender, EventArgs e) //Kopiér denne funktion til negativ
+        {
+            switch (myState)
+            {
+                //case States.SETPOWER:
+                //    myDisplay.ShowTime(time, 0);
+                //    myState = States.SETTIME;
+                //    break;
+                case States.SETTIME: //Fra OnTimePressed originalé
+                    time -= 1;
+                    myDisplay.ShowTime(time, 0);
+                    break;
+                case States.COOKING:
+                    time -= 1;
+                    myDisplay.ShowTime(time, 0);
+                    myCooker.RemoveTime();
+                    break;
+            }
+        }
+
 
         public void OnStartCancelPressed(object sender, EventArgs e)
         {

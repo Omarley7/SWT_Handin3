@@ -15,5 +15,7 @@ namespace Microwave.Classes.Interfaces
 
         void Start(int time);
         void Stop();
+        void AddTime(); //Sigurds tilføjelse. Hellere dette end at ændre TimeRemaining. Den er lavet af andre, og jeg vil ikke bryde med Open/Closed Principle
+        void RemoveTime(); //Sigurds tilføjelse. Hellere dette end at ændre TimeRemaining. Den er lavet af andre, og jeg vil ikke bryde med Open/Closed Principle
     }
 }

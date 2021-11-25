@@ -14,6 +14,7 @@ namespace Microwave.Test.Unit
         private IButton powerButton;
         private IButton timeButton;
         private IButton startCancelButton;
+        private IButton negativeTimeButton;
 
         private IDoor door;
         private IBuzzer buzzer;
@@ -29,6 +30,7 @@ namespace Microwave.Test.Unit
             powerButton = Substitute.For<IButton>();
             timeButton = Substitute.For<IButton>();
             startCancelButton = Substitute.For<IButton>();
+            negativeTimeButton = Substitute.For<IButton>();
             door = Substitute.For<IDoor>();
             light = Substitute.For<ILight>();
             display = Substitute.For<IDisplay>();
@@ -37,6 +39,7 @@ namespace Microwave.Test.Unit
 
             uut = new UserInterface(
                 powerButton, timeButton, startCancelButton,
+                negativeTimeButton,
                 door,
                 display,
                 light,
@@ -196,6 +199,92 @@ namespace Microwave.Test.Unit
             light.Received().TurnOn();
         }
 
+        #region Sigurds Tests
+        [Test]
+        public void Cooking_AddTimeWhileCooking_AssertCookerAddTimeReceived() //Cook add time works while cooking is one
+        {
+            //Arrange
+            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //Act
+            //Tryk på knappen
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //Assert
+            cooker.Received(1).AddTime();
+        }
+        [Test]
+        public void Cooking_AddTimeWhileCooking_AssertDisplayTimeAdded() //Cook add time works while cooking is one
+        {
+            //Arrange
+            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //Act
+            //Tryk på knappen
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //Assert
+            display.Received(1).ShowTime(Arg.Is<int>(2), Arg.Is<int>(0));
+        }
+
+        [Test]
+        public void Cooking_RemoveTimeBeforeCooking_AssertCookerRemoveTimeReceived() //Cook add time works while cooking is one
+        {
+            //Arrange
+            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //Act
+            negativeTimeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //Assert
+            display.Received(2).ShowTime(Arg.Is<int>(1), Arg.Is<int>(0));
+        }
+
+        [TestCase(1,2,0)] //Negative boundary
+        [TestCase(1,1,0)] //One
+        [TestCase(1,0,1)] //Zero
+        public void Cooking_RemoveTimeWhileCooking_AssertDisplayTimeRemoved(int addTime, int removeTime, int newTime) //Cook add time works while cooking is one
+        {
+            //Arrange
+            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            for (int i = 0; i < addTime; i++)
+            {
+                timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            }
+            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //Act
+            //Tryk på knappen
+            for (int i = 0; i < removeTime; i++)
+            {
+                negativeTimeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            }
+            //Assert
+            display.Received().ShowTime(Arg.Is<int>(newTime), Arg.Is<int>(0));
+        }
+
+        [TestCase(6, 2, 4)] //Many
+        public void Cooking_RemoveTimeWhileCooking_AssertDisplayTimeRemoved_ManyTest(int addTime, int removeTime, int newTime) //Cook add time works while cooking is one
+        {
+            //Arrange
+            powerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            for (int i = 0; i < addTime; i++)
+            {
+                timeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            }
+            startCancelButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //Act
+            //Tryk på knappen
+            for (int i = 0; i < removeTime; i++)
+            {
+                negativeTimeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            }
+            //Assert
+            display.Received(2).ShowTime(Arg.Is<int>(newTime), Arg.Is<int>(0));
+        }
+
+        #endregion
+
         [Test]
         public void Ready_PowerAndTime_CookerIsCalledCorrectly()
         {
@@ -337,7 +426,6 @@ namespace Microwave.Test.Unit
 
             light.Received(1).TurnOff();
         }
-
 
     }
 
